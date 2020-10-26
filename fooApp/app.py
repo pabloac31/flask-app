@@ -33,10 +33,11 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(user_id):
   """Flask-Login hook to load a User instance from ID."""
-  u = mongo.db.users.find_one({"username": user_id})
-  if not u:
-    return None
-  return User(u['username'])
+  # u = mongo.db.users.find_one({"username": user_id})
+  # if not u:
+  #   return None
+  # return User(u['username'])
+  return User("test")
 
 
 @app.route('/')
