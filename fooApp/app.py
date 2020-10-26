@@ -12,7 +12,7 @@ from bson.objectid import ObjectId
 
 from forms import ProductForm
 from forms import LoginForm
-from model import User
+from models import User
 
 
 app = Flask(__name__)
