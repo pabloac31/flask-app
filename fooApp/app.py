@@ -35,8 +35,8 @@ def load_user(user_id):
   """Flask-Login hook to load a User instance from ID."""
   u = mongo.db.users.find_one({"username": user_id})
   if not u:
-        return None
-    return User(u['username'])
+    return None
+  return User(u['username'])
 
 
 @app.route('/')
