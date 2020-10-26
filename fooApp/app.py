@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 # I use my own MongoDB database
 app.config['MONGO_DBNAME'] = "FlaskApp"
-app.config['MONGO_URI'] = "mongodb+srv://pabloac31:LAWwtP79UZ6v8LY@cluster0.31cvu.mongodb.net/FlaskAppy?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = "mongodb+srv://pabloac31:LAWwtP79UZ6v8LY@cluster0.31cvu.mongodb.net/FlaskApp?retryWrites=true&w=majority"
 app.config['SECRET_KEY'] = '7nTi6MmKp93fpOdYljZ30gQm2zFHfYEf' # Create your own.
 app.config['SESSION_PROTECTION'] = 'strong'
 
@@ -33,11 +33,10 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(user_id):
   """Flask-Login hook to load a User instance from ID."""
-  # u = mongo.db.users.find_one({"username": user_id})
-  # if not u:
-  #   return None
-  # return User(u['username'])
-  return User("test")
+  u = mongo.db.users.find_one({"username": user_id})
+  if not u:
+    return None
+  return User(u['username'])
 
 
 @app.route('/')
