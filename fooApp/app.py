@@ -10,9 +10,9 @@ import json
 import bson
 from bson.objectid import ObjectId
 
-from forms import ProductForm
-from forms import LoginForm
-from models import User
+from fooApp.forms import ProductForm
+from fooApp.forms import LoginForm
+from fooApp.models import User
 
 
 app = Flask(__name__)
