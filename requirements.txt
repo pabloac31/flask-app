@@ -2,5 +2,6 @@ Flask
 Flask-Login
 Flask-Script
 Flask-PyMongo
+pymongo[srv]
 WTForms
 gunicorn
