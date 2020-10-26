@@ -1,26 +1,29 @@
 from flask import Flask, make_response
-from flask_pymongo import PyMongo
 from flask import abort, jsonify, redirect, render_template
 from flask import request, url_for
+from flask_pymongo import PyMongo
 from flask_login import LoginManager, current_user
 from flask_login import login_user, logout_user
 from flask_login import login_required
 
-from forms import ProductForm
+import json
 import bson
 from bson.objectid import ObjectId
-import json
 
+from forms import ProductForm
 from forms import LoginForm
 from models import User
 
-app = Flask(__name__)
-mongo = PyMongo(app)
 
-app.config['MONGO_DBNAME'] = 'foodb'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/foodb'
-app.config['SECRET_KEY'] = 'enydM2ANhdcoKwdVa0jWvEsbPFuQpMjf' # Create your own.
+app = Flask(__name__)
+
+app.config['MONGO_DBNAME'] = "foodb"
+app.config['MONGO_URI'] = "mongodb+srv://test:1234@cluster0.31cvu.mongodb.net/foodb"
+#app.config['MONGO_URI'] = "mongodb://test:1234@mongodb.mlab.com:57066/foodb"
+app.config['SECRET_KEY'] = '7nTi6MmKp93fpOdYljZ30gQm2zFHfYEf' # Create your own.
 app.config['SESSION_PROTECTION'] = 'strong'
+
+mongo = PyMongo(app)
 
 # Use Flask-Login to track current user in Flask's session.
 login_manager = LoginManager()
@@ -40,28 +43,26 @@ def load_user(user_id):
 def index():
   return redirect(url_for('products_list'))
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
 
 @app.route('/products/')
 def products_list():
   """Provide HTML listing of all Products."""
   # Query: Get all Products objects, sorted by date.
   products = mongo.db.products.find()[:]
-  return render_template('product/index.html',
-    products=products)
+  return render_template('product/index.html', products=products)
 
 @app.route('/products/<product_id>/')
 def product_detail(product_id):
   """Provide HTML page with a given product."""
   # Query: get Product object by ID.
   product = mongo.db.products.find_one({ "_id": ObjectId(product_id) })
-  print product
+  print(product)
   if product is None:
     # Abort with Not Found.
     abort(404)
-  return render_template('product/detail.html',
-    product=product)
+  return render_template('product/detail.html', product=product)
 
 @app.route('/products/<product_id>/edit/', methods=['GET', 'POST'])
 @login_required
@@ -101,14 +102,12 @@ def return_string():
 def return_object():
   dump = dump_request_detail(request)
   headers = {'Content-Type': 'text/plain'}
-  return make_response(Response('Hello, world! \n' + dump, status=200,
-    headers=headers))
+  return make_response(Response('Hello, world! \n' + dump, status=200, headers=headers))
 
 @app.route('/tuple/<path:resource>')
 def return_tuple(resource):
   dump = dump_request_detail(request)
-  return 'Hello, world! \n' + dump, 200, {'Content-Type':
-    'text/plain'}
+  return 'Hello, world! \n' + dump, 200, {'Content-Type':'text/plain'}
 
 
 def dump_request_detail(request):
@@ -163,8 +162,7 @@ def login():
       return redirect(url_for('products_list'))
     else:
       error = 'Incorrect username or password.'
-  return render_template('user/login.html',
-      form=form, error=error)
+  return render_template('user/login.html', form=form, error=error)
 
 @app.route('/logout/')
 def logout():
