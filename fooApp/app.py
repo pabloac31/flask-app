@@ -17,10 +17,9 @@ from fooApp.models import User
 
 app = Flask(__name__)
 
+# I use my own MongoDB database
 app.config['MONGO_DBNAME'] = "FlaskApp"
 app.config['MONGO_URI'] = "mongodb+srv://pabloac31:LAWwtP79UZ6v8LY@cluster0.31cvu.mongodb.net/FlaskAppy"
-#app.config['MONGO_URI'] = "mongodb://test:1234@cluster0.31cvu.mongodb.net/foodb"
-#app.config['MONGO_URI'] = "mongodb://test:1234@mongodb.mlab.com:57066/foodb"
 app.config['SECRET_KEY'] = '7nTi6MmKp93fpOdYljZ30gQm2zFHfYEf' # Create your own.
 app.config['SESSION_PROTECTION'] = 'strong'
 
