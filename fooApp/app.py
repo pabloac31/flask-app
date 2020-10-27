@@ -67,7 +67,15 @@ def product_detail(product_id):
 @app.route('/products/<product_id>/edit/', methods=['GET', 'POST'])
 @login_required
 def product_edit(product_id):
-  return 'Form to edit product #.'.format(product_id)
+  product = mongo.db.products.find_one({ "_id": ObjectId(product_id) })
+  form = ProductForm(request.form)
+  if request.method == 'POST' and form.validate():
+    mongo.db.products.replace_one(product,form.data)
+    # Success. Send user back to full product list.
+    return redirect(url_for('products_list'))
+    # Either first load or validation error at this point.
+  return render_template('product/edit.html', form=form)
+  #return 'Form to edit product #.'.format(product_id)
 
 @app.route('/products/create/', methods=['GET', 'POST'])
 @login_required
